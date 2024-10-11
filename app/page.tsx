@@ -73,9 +73,12 @@ export default function Chat() {
     { color: 'gray.500' },
     { color: 'whiteAlpha.600' },
   );
+  console.log('apikey LoadED 1', process.env.NEXT_PUBLIC_OPENAI_API_KEY);
   const handleTranslate = async () => {
     let apiKey =
       localStorage.getItem('apiKey') || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+    console.log("apikey LoadED",apiKey);
     // setInputOnSubmit(inputCode);
     setInputOnSubmit(
       `Country: ${selectedTripParams.country} --- Type of Trip: ${selectedTripParams.tripType} --- Number of Days: ${selectedTripParams.days}`,
@@ -519,9 +522,9 @@ export default function Chat() {
           </FormControl>
           <Button
             // variant="primary"
-            
+
             // bg="#4DBAB4"
-            colorScheme='teal'
+            colorScheme="teal"
             py="20px"
             px="16px"
             fontSize="sm"
