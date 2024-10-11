@@ -29,6 +29,7 @@ import { IoMdPerson } from 'react-icons/io';
 import { FiLogOut } from 'react-icons/fi';
 import { LuHistory } from 'react-icons/lu';
 import { MdOutlineManageAccounts, MdOutlineSettings } from 'react-icons/md';
+import { HSeparator } from '@/components/separator/Separator';
 
 // FUNCTIONS
 
@@ -66,15 +67,34 @@ function SidebarContent(props: SidebarContent) {
       <Brand />
       <Stack direction="column" mb="auto" mt="8px">
         <Box ps="0px" pe={{ md: '0px', '2xl': '0px' }}>
-          <Links routes={routes} />
+          {/* <Links routes={routes} /> */}
+          <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
+            Welcome to Epic Adventure Co's TripGPT! TripGPT was created to help
+            you quickly generate an itinerary based on a few simple criteria.
+            Skip thinking of how to phrase your prompt to get a full fledged
+            itinerary packed with activities, expert suggestions, and travel
+            tips.
+          </Text>
+          <HSeparator mt="20px" mb="20px" w="284px" />
+          <Text color={textColor} fontSize="md" fontWeight="700" me="10px">
+            Instructions:
+          </Text>
+          <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
+            1. Select from 3 parameters, Country, Type of Trip, and Number of Days
+          </Text>
+          <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
+            2. Select from 2 models available, GPT-3.5 or GPT-4o. Try both to see what you get!
+          </Text>
+          <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
+            3. Click 'Let's Go!' and watch your dream itinerary appear. That's it!
+          </Text>
         </Box>
       </Stack>
-
-      <Box mt="60px" width={'100%'} display={'flex'} justifyContent={'center'}>
+      {/* <Box mt="60px" width={'100%'} display={'flex'} justifyContent={'center'}>
         <SidebarCard />
-      </Box>
+      </Box> */}
       <APIModal setApiKey={setApiKey} sidebar={true} />
-      <Flex
+      {/* <Flex
         mt="8px"
         justifyContent="center"
         alignItems="center"
@@ -274,7 +294,7 @@ function SidebarContent(props: SidebarContent) {
         >
           <Icon as={FiLogOut} width="16px" height="16px" color="inherit" />
         </Button>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

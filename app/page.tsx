@@ -3,7 +3,7 @@
 
 import Link from '@/components/link/Link';
 import MessageBoxChat from '@/components/MessageBox';
-import { ChatBody, OpenAIModel } from '@/types/types';
+import { ChatBody, OpenAIModel, TripParams } from '@/types/types';
 import {
   Accordion,
   AccordionButton,
@@ -13,24 +13,42 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Icon,
   Img,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
+  Spacer,
+  Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { MdAutoAwesome, MdBolt, MdEdit, MdPerson } from 'react-icons/md';
 import Bg from '../public/img/chat/bg-image.png';
+import countries from '../public/data/countries.json';
+import tripType from '../public/data/trip_type.json';
+import avatar from '../public/img/avatars/1.png';
 
 export default function Chat(props: { apiKeyApp: string }) {
   // Input States
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
+  const [selectedTripParams, setTripParams] = useState<TripParams>({
+    country: '',
+    tripType: '',
+    days: 1,
+  });
   // Response message
   const [outputCode, setOutputCode] = useState<string>('');
   // ChatGPT model
-  const [model, setModel] = useState<OpenAIModel>('gpt-4o');
+  const [model, setModel] = useState<OpenAIModel>('gpt-3.5-turbo');
   // Loading state
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -40,7 +58,7 @@ export default function Chat(props: { apiKeyApp: string }) {
   const inputColor = useColorModeValue('navy.700', 'white');
   const iconColor = useColorModeValue('brand.500', 'white');
   const bgIcon = useColorModeValue(
-    'linear-gradient(180deg, #FBFBFF 0%, #CACAFF 100%)',
+    'linear-gradient(180deg, #FBFBFF 0%, #8edbd7 100%)',
     'whiteAlpha.200',
   );
   const brandColor = useColorModeValue('brand.500', 'white');
@@ -56,8 +74,12 @@ export default function Chat(props: { apiKeyApp: string }) {
     { color: 'whiteAlpha.600' },
   );
   const handleTranslate = async () => {
-    let apiKey = localStorage.getItem('apiKey');
-    setInputOnSubmit(inputCode);
+    let apiKey =
+      localStorage.getItem('apiKey') || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+    // setInputOnSubmit(inputCode);
+    setInputOnSubmit(
+      `Country: ${selectedTripParams.country} --- Type of Trip: ${selectedTripParams.tripType} --- Number of Days: ${selectedTripParams.days}`,
+    );
 
     // Chat post conditions(maximum number of characters, valid message etc.)
     const maxCodeLength = model === 'gpt-4o' ? 700 : 700;
@@ -67,10 +89,10 @@ export default function Chat(props: { apiKeyApp: string }) {
       return;
     }
 
-    if (!inputCode) {
-      alert('Please enter your message.');
-      return;
-    }
+    // if (!inputCode) {
+    //   alert('Please enter your message.');
+    //   return;
+    // }
 
     if (inputCode.length > maxCodeLength) {
       alert(
@@ -82,7 +104,7 @@ export default function Chat(props: { apiKeyApp: string }) {
     setLoading(true);
     const controller = new AbortController();
     const body: ChatBody = {
-      inputCode,
+      inputCode: `I am interested in taking a trip to ${selectedTripParams.country}. The type of trip I am looking for is ${selectedTripParams.tripType}. I plan to visit for ${selectedTripParams.days} days. Please provide me with a complete ${selectedTripParams.days}-day itinerary, including suggested activities, accomodation, as well as travel tips based on my criteria. The output should be in a standardised format, including an overview, the main body with at least 3 activities a day with in a list. The itinerary should also include breakfast, lunch, and dinner suggestions for each day, seperate from the suggested activities under a sub-section called 'Food' within each day. Include additional travel tips for the suggested country, and a short conclusion encouraging the person to take a break! Use smaller headings where possible to conserve view space.`,
       model,
       apiKey,
     };
@@ -152,6 +174,13 @@ export default function Chat(props: { apiKeyApp: string }) {
     setInputCode(Event.target.value);
   };
 
+  const handleTripParamChange = (Event: any) => {
+    setTripParams({
+      ...selectedTripParams,
+      [Event.target.name]: Event.target.value,
+    });
+  };
+
   return (
     <Flex
       w="100%"
@@ -159,20 +188,22 @@ export default function Chat(props: { apiKeyApp: string }) {
       direction="column"
       position="relative"
     >
-      <Img
+      {/* <Img
         src={Bg.src}
         position={'absolute'}
         w="350px"
         left="50%"
         top="50%"
         transform={'translate(-50%, -50%)'}
-      />
+      /> */}
       <Flex
         direction="column"
         mx="auto"
         w={{ base: '100%', md: '100%', xl: '100%' }}
-        minH={{ base: '75vh', '2xl': '85vh' }}
+        minH={{ base: '100vh', '2xl': '100vh' }} // change this for the overall viewport for the right side
         maxW="1000px"
+        pt="30px"
+        pb="10px"
       >
         {/* Model Change */}
         <Flex direction={'column'} w="100%" mb={outputCode ? '20px' : 'auto'}>
@@ -183,39 +214,6 @@ export default function Chat(props: { apiKeyApp: string }) {
             mb="20px"
             borderRadius="60px"
           >
-            <Flex
-              cursor={'pointer'}
-              transition="0.3s"
-              justify={'center'}
-              align="center"
-              bg={model === 'gpt-4o' ? buttonBg : 'transparent'}
-              w="174px"
-              h="70px"
-              boxShadow={model === 'gpt-4o' ? buttonShadow : 'none'}
-              borderRadius="14px"
-              color={textColor}
-              fontSize="18px"
-              fontWeight={'700'}
-              onClick={() => setModel('gpt-4o')}
-            >
-              <Flex
-                borderRadius="full"
-                justify="center"
-                align="center"
-                bg={bgIcon}
-                me="10px"
-                h="39px"
-                w="39px"
-              >
-                <Icon
-                  as={MdAutoAwesome}
-                  width="20px"
-                  height="20px"
-                  color={iconColor}
-                />
-              </Flex>
-              GPT-4o
-            </Flex>
             <Flex
               cursor={'pointer'}
               transition="0.3s"
@@ -244,14 +242,49 @@ export default function Chat(props: { apiKeyApp: string }) {
                   as={MdBolt}
                   width="20px"
                   height="20px"
-                  color={iconColor}
+                  // color={iconColor}
+                  color="#4DBAB4"
                 />
               </Flex>
               GPT-3.5
             </Flex>
+            <Flex
+              cursor={'pointer'}
+              transition="0.3s"
+              justify={'center'}
+              align="center"
+              bg={model === 'gpt-4o' ? buttonBg : 'transparent'}
+              w="174px"
+              h="70px"
+              boxShadow={model === 'gpt-4o' ? buttonShadow : 'none'}
+              borderRadius="14px"
+              color={textColor}
+              fontSize="18px"
+              fontWeight={'700'}
+              onClick={() => setModel('gpt-4o')}
+            >
+              <Flex
+                borderRadius="full"
+                justify="center"
+                align="center"
+                bg={bgIcon}
+                me="10px"
+                h="39px"
+                w="39px"
+              >
+                <Icon
+                  as={MdAutoAwesome}
+                  width="20px"
+                  height="20px"
+                  // color={iconColor}
+                  color="#4DBAB4"
+                />
+              </Flex>
+              GPT-4o
+            </Flex>
           </Flex>
 
-          <Accordion color={gray} allowToggle w="100%" my="0px" mx="auto">
+          {/* <Accordion color={gray} allowToggle w="100%" my="0px" mx="auto">
             <AccordionItem border="none">
               <AccordionButton
                 borderBottom="0px solid"
@@ -278,7 +311,7 @@ export default function Chat(props: { apiKeyApp: string }) {
                 </Text>
               </AccordionPanel>
             </AccordionItem>
-          </Accordion>
+          </Accordion> */}
         </Flex>
         {/* Main Box */}
         <Flex
@@ -305,7 +338,7 @@ export default function Chat(props: { apiKeyApp: string }) {
                 as={MdPerson}
                 width="20px"
                 height="20px"
-                color={brandColor}
+                color="blackAlpha.600"
               />
             </Flex>
             <Flex
@@ -315,6 +348,7 @@ export default function Chat(props: { apiKeyApp: string }) {
               borderRadius="14px"
               w="100%"
               zIndex={'2'}
+              align="right"
             >
               <Text
                 color={textColor}
@@ -324,14 +358,14 @@ export default function Chat(props: { apiKeyApp: string }) {
               >
                 {inputOnSubmit}
               </Text>
-              <Icon
+              {/* <Icon
                 cursor="pointer"
                 as={MdEdit}
                 ms="auto"
                 width="20px"
                 height="20px"
                 color={gray}
-              />
+              /> */}
             </Flex>
           </Flex>
           <Flex w="100%">
@@ -339,24 +373,34 @@ export default function Chat(props: { apiKeyApp: string }) {
               borderRadius="full"
               justify="center"
               align="center"
-              bg={'linear-gradient(15.46deg, #4A25E1 26.3%, #7B5AFF 86.4%)'}
+              // bg={'linear-gradient(15.46deg, #4A25E1 26.3%, #7B5AFF 86.4%)'}
+              bg={'#233E59'}
               me="20px"
               h="40px"
               minH="40px"
               minW="40px"
             >
-              <Icon
+              {/* <Icon
                 as={MdAutoAwesome}
                 width="20px"
                 height="20px"
                 color="white"
-              />
+              /> */}
+              <Img width="30px" height="15px" src={avatar.src} />
             </Flex>
-            <MessageBoxChat output={outputCode} />
+            {/* Output from Chatgpt */}
+            <Box
+              w="100%"
+              h="calc(100vh - 380px)"
+              minH="100%"
+              overflowY="scroll"
+            >
+              <MessageBoxChat output={outputCode} />
+            </Box>
           </Flex>
         </Flex>
         {/* Chat Input */}
-        <Flex
+        {/* <Flex
           ms={{ base: '0px', xl: '60px' }}
           mt="20px"
           justifySelf={'flex-end'}
@@ -399,19 +443,117 @@ export default function Chat(props: { apiKeyApp: string }) {
           >
             Submit
           </Button>
+        </Flex> */}
+        <Flex
+          ms={{ base: '0px', xl: '60px' }}
+          mt="20px"
+          justifySelf={'flex-end'}
+          alignItems="end"
+        >
+          <FormControl me="10px">
+            <FormLabel>Country</FormLabel>
+            <Select
+              minH="54px"
+              h="100%"
+              borderColor={borderColor}
+              borderRadius="45px"
+              variant="outline"
+              // placeholder="Select One"
+              name="country"
+              value={selectedTripParams.country}
+              onChange={handleTripParamChange}
+            >
+              <option value="" disabled hidden>
+                Select One
+              </option>
+              {countries.map((country) => (
+                <option key={country.iso3} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl me="10px">
+            <FormLabel>Type of Trip</FormLabel>
+            <Select
+              minH="54px"
+              h="100%"
+              me="10px"
+              borderColor={borderColor}
+              borderRadius="45px"
+              variant="outline"
+              // placeholder="Select One"
+              name="tripType"
+              value={selectedTripParams.tripType}
+              onChange={handleTripParamChange}
+            >
+              <option value="" disabled hidden>
+                Select One
+              </option>
+              {tripType.map((trip) => (
+                <option key={trip.id} value={trip.type}>
+                  {trip.type}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl me="10px">
+            <FormLabel>Number of Days</FormLabel>
+            <NumberInput
+              // variant="outline"
+              value={selectedTripParams.days}
+              max={14}
+              clampValueOnBlur={true}
+              name="days"
+              onChange={(e: any) => {
+                setTripParams({ ...selectedTripParams, days: e });
+              }}
+            >
+              <NumberInputField minH="54px" h="100%" />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+          <Button
+            // variant="primary"
+            
+            // bg="#4DBAB4"
+            colorScheme='teal'
+            py="20px"
+            px="16px"
+            fontSize="sm"
+            borderRadius="45px"
+            ms="auto"
+            w={{ base: '160px', md: '210px' }}
+            h="54px"
+            _hover={{
+              boxShadow: '0px 21px 27px -10px #4DBAB4 !important',
+              bg: 'linear-gradient(15.46deg, #4DBAB4 26.3%, #8edbd7 86.4%) !important',
+              _disabled: {
+                bg: 'linear-gradient(15.46deg, #4DBAB4 26.3%, #8edbd7 86.4%)',
+              },
+            }}
+            onClick={handleTranslate}
+            isLoading={loading ? true : false}
+          >
+            Let's Go!
+          </Button>
         </Flex>
 
         <Flex
           justify="center"
-          mt="20px"
+          mt="10px"
           direction={{ base: 'column', md: 'row' }}
           alignItems="center"
         >
           <Text fontSize="xs" textAlign="center" color={gray}>
-            Free Research Preview. ChatGPT may produce inaccurate information
-            about people, places, or facts.
+            TripGPT may produce inaccurate information about people, places, or
+            facts. Check important info.
           </Text>
-          <Link href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">
+          {/* <Link href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">
             <Text
               fontSize="xs"
               color={textColor}
@@ -420,7 +562,7 @@ export default function Chat(props: { apiKeyApp: string }) {
             >
               ChatGPT May 12 Version
             </Text>
-          </Link>
+          </Link> */}
         </Flex>
       </Flex>
     </Flex>

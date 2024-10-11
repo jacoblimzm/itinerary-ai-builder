@@ -1,0 +1,11 @@
+[
+  { "id": 1, "type": "Adventure" },
+  { "id": 2, "type": "Backpack" },
+  { "id": 3, "type": "Budget" },
+  { "id": 4, "type": "Corporate" },
+  { "id": 5, "type": "Culture" },
+  { "id": 6, "type": "Family" },
+  { "id": 7, "type": "Foodie" },
+  { "id": 8, "type": "Leisure" },
+  { "id": 9, "type": "Luxury" }
+]
