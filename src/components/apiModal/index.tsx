@@ -102,9 +102,8 @@ function APIModal(props: { setApiKey: any; sidebar?: boolean }) {
                 lineHeight="28px"
                 mb="22px"
               >
-                You need an OpenAI API Key to use Horizon AI Template's
-                features. Your API Key is stored locally on your browser and
-                never sent anywhere else.
+                You need an OpenAI API Key to use this feature. Your API Key is
+                stored locally on your browser and never sent anywhere else.
               </Text>
               <Flex mb="20px">
                 <Input
@@ -189,7 +188,7 @@ function APIModal(props: { setApiKey: any; sidebar?: boolean }) {
                     <AccordionIcon color={textColor} />
                   </AccordionButton>
                   <AccordionPanel p="18px 0px 10px 0px">
-                    <UnorderedList p="5px">
+                    <UnorderedList p="5px" textAlign={'left'}>
                       <ListItem
                         mb="26px"
                         color={grayColor}
@@ -199,7 +198,7 @@ function APIModal(props: { setApiKey: any; sidebar?: boolean }) {
                         Make sure you have an{' '}
                         <Link
                           textDecoration="underline"
-                          fontSize=",d"
+                          fontSize="md"
                           href="https://platform.openai.com/account/"
                           fontWeight="500"
                           color={grayColor}
@@ -212,7 +211,6 @@ function APIModal(props: { setApiKey: any; sidebar?: boolean }) {
                       <ListItem
                         color={grayColor}
                         fontSize="md"
-                        lineHeight="28px"
                         fontWeight="500"
                       >
                         Make sure you have your billing info added in{' '}
