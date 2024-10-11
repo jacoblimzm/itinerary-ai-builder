@@ -36,7 +36,7 @@ import countries from '../public/data/countries.json';
 import tripType from '../public/data/trip_type.json';
 import avatar from '../public/img/avatars/1.png';
 
-export default function Chat(props: { apiKeyApp: string }) {
+export default function Chat() {
   // Input States
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
