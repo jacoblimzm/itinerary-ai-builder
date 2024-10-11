@@ -80,19 +80,25 @@ function SidebarContent(props: SidebarContent) {
             Instructions:
           </Text>
           <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
-            1. Select from 3 parameters, Country, Type of Trip, and Number of Days
+            1. Select from 3 parameters, Country, Type of Trip, and Number of
+            Days
           </Text>
           <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
-            2. Select from 2 models available, GPT-3.5 or GPT-4o. Try both to see what you get!
+            2. Select from 2 models available, GPT-3.5 or GPT-4o. Try both to
+            see what you get!
           </Text>
           <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
-            3. Click 'Let's Go!' and watch your dream itinerary appear. That's it!
+            3. Click 'Let's Go!' and watch your dream itinerary appear. That's
+            it!
           </Text>
         </Box>
       </Stack>
-      {/* <Box mt="60px" width={'100%'} display={'flex'} justifyContent={'center'}>
-        <SidebarCard />
-      </Box> */}
+      <Box mt="60px" width={'100%'} display={'flex'} justifyContent={'center'}>
+        {/* TODO: add contact information here */}
+        <Text color={textColor} fontSize="sm" fontWeight="500" me="10px">
+          hello@epicadventuresco.com
+        </Text>
+      </Box>
       <APIModal setApiKey={setApiKey} sidebar={true} />
       {/* <Flex
         mt="8px"
