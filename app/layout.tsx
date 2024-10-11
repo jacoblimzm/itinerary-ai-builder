@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     const initialKey = localStorage.getItem('apiKey');
-    console.log(initialKey);
+    // console.log(initialKey);
     if (initialKey?.includes('sk-') && apiKey !== initialKey) {
       setApiKey(initialKey);
     }
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Box>
               <Sidebar setApiKey={setApiKey} routes={routes} />
               <Box
-                pt={{ base: '60px', md: '100px' }}
+                // pt={{ base: '60px', md: '100px' }}
                 float="right"
                 minHeight="100vh"
                 height="100%"
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 transitionProperty="top, bottom, width"
                 transitionTimingFunction="linear, linear, ease"
               >
-                <Portal>
+                {/* <Portal>
                   <Box>
                     <Navbar
                       setApiKey={setApiKey}
@@ -63,20 +63,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       secondary={getActiveNavbar(routes, pathname)}
                     />
                   </Box>
-                </Portal>
+                </Portal> */}
+                {/* Main Box that contains the right items */}
                 <Box
                   mx="auto"
-                  p={{ base: '20px', md: '30px' }}
-                  pe="20px"
+                  // p={{ base: '20px', md: '30px' }}
+                  // pe="20px"
                   minH="100vh"
-                  pt="50px"
+                  // pt="50px"
                 >
                   {children}
                   {/* <Component apiKeyApp={apiKey} {...pageProps} /> */}
                 </Box>
-                <Box>
+                {/* <Box>
                   <Footer />
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           )}
