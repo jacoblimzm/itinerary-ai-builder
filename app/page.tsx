@@ -73,7 +73,7 @@ export default function Chat() {
     { color: 'gray.500' },
     { color: 'whiteAlpha.600' },
   );
-  
+
   const handleTranslate = async () => {
     let apiKey =
       localStorage.getItem('apiKey') || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -184,12 +184,7 @@ export default function Chat() {
   };
 
   return (
-    <Flex
-      w="100%"
-      pt={{ base: '70px', md: '0px' }}
-      direction="column"
-      position="relative"
-    >
+    <Flex w="100%" pt="0px" direction="column" position="relative">
       {/* <Img
         src={Bg.src}
         position={'absolute'}
@@ -206,6 +201,7 @@ export default function Chat() {
         maxW="1000px"
         pt="30px"
         pb="10px"
+        px={{ base: '15px' }}
       >
         {/* Model Change */}
         <Flex direction={'column'} w="100%" mb={outputCode ? '20px' : 'auto'}>
@@ -286,7 +282,14 @@ export default function Chat() {
             </Flex>
           </Flex>
 
-          {/* <Accordion color={gray} allowToggle w="100%" my="0px" mx="auto">
+          <Accordion
+            display={{ base: 'block', xl: 'none' }}
+            color={gray}
+            allowToggle
+            w="100%"
+            my="0px"
+            mx="auto"
+          >
             <AccordionItem border="none">
               <AccordionButton
                 borderBottom="0px solid"
@@ -295,25 +298,52 @@ export default function Chat() {
                 _hover={{ border: '0px solid', bg: 'none' }}
                 _focus={{ border: '0px solid', bg: 'none' }}
               >
-                <Box flex="1" textAlign="left">
+                <Box flex="1" textAlign="center">
                   <Text color={gray} fontWeight="500" fontSize="sm">
-                    No plugins added
+                    Instructions
                   </Text>
                 </Box>
                 <AccordionIcon color={gray} />
               </AccordionButton>
-              <AccordionPanel mx="auto" w="max-content" p="0px 0px 10px 0px">
+              <AccordionPanel mx="auto" w="100%" p="0px 0px 10px 0px">
+                <Text
+                  color="black"
+                  fontWeight="500"
+                  fontSize="sm"
+                  textAlign="center"
+                >
+                  Welcome to Epic Adventure Co's TripGPT!
+                </Text>
                 <Text
                   color={gray}
                   fontWeight="500"
                   fontSize="sm"
-                  textAlign={'center'}
+                  textAlign="center"
                 >
-                  This is a cool text example.
+                  1. Select from 3 parameters, Country, Type of Trip, and Number
+                  of Days
+                </Text>
+                <Text
+                  color={gray}
+                  fontWeight="500"
+                  fontSize="sm"
+                  textAlign="center"
+                >
+                  2. Select from 2 models available, GPT-3.5 or GPT-4o. Try both
+                  to see what you get!
+                </Text>
+                <Text
+                  color={gray}
+                  fontWeight="500"
+                  fontSize="sm"
+                  textAlign="center"
+                >
+                  3. Click 'Let's Go!' and watch your dream itinerary appear.
+                  That's it!
                 </Text>
               </AccordionPanel>
             </AccordionItem>
-          </Accordion> */}
+          </Accordion>
         </Flex>
         {/* Main Box */}
         <Flex
@@ -321,7 +351,7 @@ export default function Chat() {
           w="100%"
           mx="auto"
           display={outputCode ? 'flex' : 'none'}
-          mb={'auto'}
+          mb="auto"
         >
           <Flex w="100%" align={'center'} mb="10px">
             <Flex
